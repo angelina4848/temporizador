@@ -44,8 +44,8 @@ void setup()
   pinMode(zero_sensor, INPUT);
   
   while(digitalRead(zero_sensor) != 0){
-    stepper.Move(1.5);
-    delay(10);
+    stepper.Move(3);    
+    delay(100);
   }
   digitalWrite(buzzer, HIGH);
   digitalWrite(green, 1);
@@ -65,8 +65,14 @@ void loop() {
     tmr2 = millis();                   // сброс таймера
 
     tmp++;
+    
   }
-  
+  if(tmp == 0){
+    
+    digitalWrite(buzzer, LOW);
+    Serial.println("LOW");
+      
+    }
   // Random back and forth
 if(tmp ==340){
     
@@ -112,7 +118,7 @@ digitalWrite(green, 1);
     
     digitalWrite(buzzer, LOW);
     Serial.println("LOW");
-      //github test
+      
     }
    
   
