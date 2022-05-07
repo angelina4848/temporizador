@@ -47,13 +47,10 @@ void setup()
     stepper.Move(3);    
     delay(100);
   }
-
+delay(1000);
   digitalWrite(green, 1);
 }
-void yield(){
-  
 
-}
 void loop() {  
   if(tmp == 0){
     
