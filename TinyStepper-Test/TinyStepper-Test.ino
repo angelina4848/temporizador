@@ -47,14 +47,20 @@ void setup()
     stepper.Move(3);    
     delay(100);
   }
-  digitalWrite(buzzer, HIGH);
+
   digitalWrite(green, 1);
 }
 void yield(){
   
 
 }
-void loop() {
+void loop() {  
+  if(tmp == 0){
+    
+    digitalWrite(buzzer, HIGH);
+    Serial.println("HIGH");
+      
+    }
     if (millis() - tmr1 >= (2000*coef)) {  // ищем разницу
     tmr1 = millis();                   // сброс таймера
     stepper.Move(3);
@@ -67,12 +73,7 @@ void loop() {
     tmp++;
     
   }
-  if(tmp == 0){
-    
-    digitalWrite(buzzer, LOW);
-    Serial.println("LOW");
-      
-    }
+
   // Random back and forth
 if(tmp ==340){
     
