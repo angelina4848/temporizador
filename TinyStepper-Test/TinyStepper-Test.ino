@@ -10,81 +10,110 @@ comment branch 1
 #include <TinyStepper.h>
 uint32_t tmr1 = 0;
 uint32_t tmr2 = 0;
-uint32_t tmr3 = 0;
-uint32_t tmr4 = 0;
-uint32_t tmr5 = 0;
-uint32_t tmr6 = 0;
-uint32_t tmr7 = 0;
-float coef = 0.25;
+boolean flag1 = 0;
+boolean flag2 = 0;
+boolean flag3 = 0;
+boolean flag4 = 0;
+boolean flag5 = 0;
+boolean flag6 = 0;
+float coef = 1;
+uint32_t tmp = 0;
 // Define Arduino Pin Outputs to to the ULN2003 Darlington Array to drive a 28BYJ-48 Stepper Motor
-#define IN1 A0
-#define IN2 A1
-#define IN3 A2
-#define IN4 A3
+#define IN1 A3
+#define IN2 A2
+#define IN3 A1
+#define IN4 A0
+#define red 10
+#define yellow 11
+#define green 12
 #define HALFSTEPS 4096  // Number of half-steps for a full rotation
 #define buzzer 8
+#define zero_sensor 13
 // Initialize the TinyStepper Class
 TinyStepper stepper(HALFSTEPS, IN1, IN2, IN3, IN4);
 
 void setup()
 {
-  Serial.begin(38400);
+  Serial.begin(9600);
   stepper.Enable();
   delay(1000);
   pinMode(buzzer, OUTPUT);
+  pinMode(red, OUTPUT);
+  pinMode(yellow, OUTPUT);
+  pinMode(green, OUTPUT);
+  pinMode(zero_sensor, INPUT);
+  
+  while(digitalRead(zero_sensor) != 0){
+    stepper.Move(1.5);
+    delay(10);
+  }
+  digitalWrite(buzzer, HIGH);
+  digitalWrite(green, 1);
 }
 void yield(){
   
 
 }
 void loop() {
-    if (millis() - tmr1 >= (1000*coef)) {  // ищем разницу
+    if (millis() - tmr1 >= (2000*coef)) {  // ищем разницу
     tmr1 = millis();                   // сброс таймера
-    stepper.Move(1.5);
+    stepper.Move(3);
     Serial.println(millis());
     
   }
+  if (millis() - tmr2 >= (500*coef)) {  // ищем разницу
+    tmr2 = millis();                   // сброс таймера
+
+    tmp++;
+  }
+  
   // Random back and forth
-if(millis() - tmr2 >= (170000*coef)){
-    tmr2 = millis();
+if(tmp ==340){
+    
     
     digitalWrite(buzzer, HIGH);
-
+    Serial.println("HIGH");
+digitalWrite(green, 0);
+digitalWrite(yellow, 1);
   }
-  if(millis() - tmr4 >= (170500*coef)){
-    tmr4 = millis();
+  if(tmp == 341){
+    
     
     digitalWrite(buzzer, LOW);
-
-  }
-    if(millis() - tmr3 >= (171000*coef)){
-    tmr3 = millis();
-    
-    digitalWrite(buzzer, HIGH);
-
-  }
-    if(millis() - tmr5 >= (171500*coef)){
-    tmr5 = millis();
-    
-    digitalWrite(buzzer, LOW);
+    Serial.println("LOW");
 
   }
 
+  if(tmp == 360){
     
-  if(millis() - tmr6 >= (240000*coef)){
-    tmr6 = millis();
 
     
     digitalWrite(buzzer, HIGH);
+    Serial.println("HIGH");
+    digitalWrite(yellow, 0);
+digitalWrite(red, 1);
   } 
-  if(millis() - tmr7 >= (3000*coef)){
-    tmr7 = millis();
+  if(tmp == 366){
+    
     digitalWrite(buzzer, LOW);
-        tmr1 = 3000;
-    tmr2 = 3000;
-    tmr3 = 3000;
-    tmr4 = 3000;
-    tmr5 = 3000;
+    Serial.println("LOW");
+      
+    }    
+  if(tmp == 480){
+    digitalWrite(buzzer, HIGH);
+    Serial.println("HIGH");
+        digitalWrite(red, 0);
+digitalWrite(green, 1);
+
+    tmp = 0;
+  }    
+   
+  if(tmp == 6){
+    
+    digitalWrite(buzzer, LOW);
+    Serial.println("LOW");
+      
     }
+   
   
 }
