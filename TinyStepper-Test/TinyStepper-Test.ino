@@ -34,7 +34,7 @@ TinyStepper stepper(HALFSTEPS, IN1, IN2, IN3, IN4);
 
 void setup()
 {
-  Serial.begin(9600);
+  //Serial.begin(9600);
   stepper.Enable();
   delay(1000);
   pinMode(buzzer, OUTPUT);
@@ -44,9 +44,10 @@ void setup()
   pinMode(zero_sensor, INPUT);
   
   while(digitalRead(zero_sensor) != 0){
-    stepper.Move(3);    
-    delay(100);
+    stepper.Move(-0.1);    
+    delay(10);
   }
+   
 delay(1000);
   digitalWrite(green, 1);
 }
@@ -55,13 +56,13 @@ void loop() {
   if(tmp == 0){
     
     digitalWrite(buzzer, HIGH);
-    Serial.println("HIGH");
+   // //Serial.println("HIGH");
       
     }
     if (millis() - tmr1 >= (2000*coef)) {  // ищем разницу
     tmr1 = millis();                   // сброс таймера
     stepper.Move(3);
-    Serial.println(millis());
+    ////Serial.println(millis());
     
   }
   if (millis() - tmr2 >= (500*coef)) {  // ищем разницу
@@ -76,7 +77,7 @@ if(tmp ==340){
     
     
     digitalWrite(buzzer, HIGH);
-    Serial.println("HIGH");
+    ////Serial.println("HIGH");
 digitalWrite(green, 0);
 digitalWrite(yellow, 1);
   }
@@ -84,7 +85,7 @@ digitalWrite(yellow, 1);
     
     
     digitalWrite(buzzer, LOW);
-    Serial.println("LOW");
+    //Serial.println("LOW");
 
   }
 
@@ -93,29 +94,32 @@ digitalWrite(yellow, 1);
 
     
     digitalWrite(buzzer, HIGH);
-    Serial.println("HIGH");
+    //Serial.println("HIGH");
     digitalWrite(yellow, 0);
 digitalWrite(red, 1);
   } 
   if(tmp == 366){
     
     digitalWrite(buzzer, LOW);
-    Serial.println("LOW");
+    //Serial.println("LOW");
       
     }    
   if(tmp == 480){
-    digitalWrite(buzzer, HIGH);
-    Serial.println("HIGH");
-        digitalWrite(red, 0);
-digitalWrite(green, 1);
+    
 
-    tmp = 0;
-  }    
+    
+  }   
+  if((digitalRead(zero_sensor) == 0) && (tmp > 400)){
+    tmp = 0; 
+            digitalWrite(red, 0);
+digitalWrite(green, 1);
+stepper.Move(3);
+  }
    
   if(tmp == 6){
     
     digitalWrite(buzzer, LOW);
-    Serial.println("LOW");
+    //Serial.println("LOW");
       
     }
    
